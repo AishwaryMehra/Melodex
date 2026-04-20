@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Melodex - Spotify-Inspired Music Player</title>
+  <meta name="description" content="Melodex is a modern, feature-rich web music player inspired by Spotify. Play, discover, and manage your music library.">
+  <meta name="keywords" content="music player, web player, streaming, melodex, spotify clone">
+  <meta name="author" content="Melodex">
+  <meta name="theme-color" content="#1DB954">
+
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ==============================
+       MAIN APP CONTAINER
+       ============================== -->
+  <div id="melodex-app">
+
+    <!-- ==============================
+         SIDEBAR - Navigation & Playlists
+         ============================== -->
+    <aside id="sidebar">
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <i class="fas fa-compact-disc"></i>
+        <h1>Melodex</h1>
+      </div>
+
+      <!-- Main Navigation -->
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-view="home" id="nav-home">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+        <a href="#" class="nav-item" data-view="search" id="nav-search">
+          <i class="fas fa-search"></i>
+          <span>Search</span>
+        </a>
+        <a href="#" class="nav-item" data-view="library" id="nav-library">
+          <i class="fas fa-book"></i>
+          <span>Your Library</span>
+        </a>
+        <a href="#" class="nav-item" data-view="liked" id="nav-liked">
+          <i class="fas fa-heart"></i>
+          <span>Liked Songs</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Playlists -->
+      <div class="sidebar-playlists">
+        <h3>Playlists</h3>
+        <button id="create-playlist-btn">
+          <i class="fas fa-plus"></i>
+          <span>Create Playlist</span>
+        </button>
+        <ul id="playlist-list">
+          <!-- Dynamically populated -->
+        </ul>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <!-- Local File Upload -->
+      <div class="sidebar-upload">
+        <button id="upload-btn">
+          <i class="fas fa-upload"></i>
+          <span>Add Local Files</span>
+        </button>
+        <input type="file" id="file-input" accept="audio/*" multiple hidden>
+      </div>
+
+      <!-- Genre Filters -->
+      <div class="sidebar-genres">
+        <h3>Genres</h3>
+        <div id="genre-filters">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==============================
+         MAIN CONTENT AREA
+         ============================== -->
+    <main id="main-content">
+      <!-- Sticky Header with Search -->
+      <header id="main-header">
+        <div class="header-search">
+          <i class="fas fa-search"></i>
+          <input type="text" id="search-input" placeholder="Search songs, artists, albums..." autocomplete="off">
+        </div>
+        <div class="header-actions">
+          <span id="song-count"></span>
+          <button id="shuffle-all-btn" title="Shuffle Play All">
+            <i class="fas fa-random"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Scrollable Content -->
+      <div id="content-area">
+        <!-- Featured Section -->
+        <section id="featured-section">
+          <h2>Featured Picks</h2>
+          <div id="featured-cards">
+            <!-- Dynamically populated with random featured songs -->
+          </div>
+        </section>
+
+        <!-- Songs List Section -->
+        <section id="songs-section">
+          <div class="section-header">
+            <h2 id="section-title">All Songs</h2>
+            <div class="view-toggle">
+              <button class="view-btn active" data-view="list" title="List View" id="list-view-btn">
+                <i class="fas fa-list"></i>
+              </button>
+              <button class="view-btn" data-view="grid" title="Grid View" id="grid-view-btn">
+                <i class="fas fa-th"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- List Column Headers -->
+          <div id="list-header">
+            <span class="col-num">#</span>
+            <span class="col-title">Title</span>
+            <span class="col-album">Album</span>
+            <span class="col-genre">Genre</span>
+            <span class="col-duration"><i class="far fa-clock"></i></span>
+            <span class="col-actions"></span>
+          </div>
+
+          <!-- Song List Container -->
+          <div id="song-list">
+            <!-- Dynamically populated by JavaScript -->
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ==============================
+         PLAYER BAR - Fixed Bottom
+         ============================== -->
+    <footer id="player-bar">
+      <!-- Now Playing Info (Left) -->
+      <div class="player-info">
+        <div id="now-playing-art" class="player-art">
+          <i class="fas fa-music"></i>
+        </div>
+        <div class="player-details">
+          <p id="now-playing-title" class="player-title">No song selected</p>
+          <p id="now-playing-artist" class="player-artist">Select a song to play</p>
+        </div>
+        <button id="like-btn" class="like-btn" title="Like this song">
+          <i class="far fa-heart"></i>
+        </button>
+        <!-- Mobile Play Button -->
+        <button id="mobile-play-btn" class="mobile-play-btn" title="Play">
+          <i class="fas fa-play"></i>
+        </button>
+      </div>
+
+      <!-- Player Controls (Center) -->
+      <div class="player-controls">
+        <div class="control-buttons">
+          <button id="shuffle-btn" class="control-btn" title="Shuffle">
+            <i class="fas fa-random"></i>
+          </button>
+          <button id="prev-btn" class="control-btn" title="Previous">
+            <i class="fas fa-step-backward"></i>
+          </button>
+          <button id="play-btn" class="control-btn play-btn" title="Play">
+            <i class="fas fa-play" id="play-icon"></i>
+          </button>
+          <button id="next-btn" class="control-btn" title="Next">
+            <i class="fas fa-step-forward"></i>
+          </button>
+          <button id="repeat-btn" class="control-btn" title="Repeat">
+            <i class="fas fa-redo"></i>
+          </button>
+        </div>
+        <div class="progress-container">
+          <span id="current-time">0:00</span>
+          <div id="progress-bar" class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+            <div id="progress-handle" class="progress-handle"></div>
+          </div>
+          <span id="total-time">0:00</span>
+        </div>
+      </div>
+
+      <!-- Extra Controls (Right) -->
+      <div class="player-extra">
+        <button id="queue-btn" class="extra-btn" title="Queue">
+          <i class="fas fa-list-ul"></i>
+        </button>
+        <div class="volume-control">
+          <button id="volume-btn" class="extra-btn" title="Volume">
+            <i class="fas fa-volume-up" id="volume-icon"></i>
+          </button>
+          <div id="volume-bar" class="volume-bar">
+            <div id="volume-fill" class="volume-fill"></div>
+            <div id="volume-handle" class="volume-handle"></div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==============================
+       QUEUE SIDE PANEL
+       ============================== -->
+  <div id="queue-panel" class="queue-panel hidden">
+    <div class="queue-header">
+      <h3>Queue</h3>
+      <button id="close-queue-btn" title="Close Queue">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div id="queue-list">
+      <!-- Dynamically populated -->
+    </div>
+  </div>
+
+  <!-- ==============================
+       NOTIFICATION TOAST
+       ============================== -->
+  <div id="notification" class="notification"></div>
+
+  <!-- Main Application Script (OOP) -->
+  <script src="app.js"></script>
+
+</body>
+</html>
